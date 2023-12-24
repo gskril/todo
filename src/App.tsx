@@ -1,9 +1,10 @@
-import './App.css'
-import { useEffect, useState } from 'react'
-import Auth from './screens/Auth'
 import { Session } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+
+import './App.css'
 import { supabase } from './supabase'
 import Account from './screens/Account'
+import Auth from './screens/Auth'
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -18,15 +19,9 @@ export default function App() {
     })
   }, [])
 
-  return (
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
-      {session && <p>Logged in as user {session.user.id}</p>}
-
-      {!session ? (
-        <Auth />
-      ) : (
-        <Account key={session.user.id} session={session} />
-      )}
-    </div>
-  )
+  if (session) {
+    return <Account key={session.user.id} session={session} />
+  } else {
+    return <Auth />
+  }
 }

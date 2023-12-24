@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '../supabase'
 import { Session } from '@supabase/supabase-js'
+import { useState, useEffect } from 'react'
+
+import { supabase } from '../supabase'
 import { Todo } from '../types'
 
 export default function Account({ session }: { session: Session }) {
