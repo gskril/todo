@@ -1,6 +1,16 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
+import { Button } from '@/components/ui/button'
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+
 import { supabase } from '../supabase'
 import { Todo } from '../types'
 
@@ -61,17 +71,30 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
-    <form onSubmit={(e) => createTodo(e)} className="form-widget">
-      <input name="title" type="text" placeholder="my task" />
-      <div>
-        <button
-          className="button primary block"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Loading ...' : 'Save'}
-        </button>
-      </div>
-    </form>
+    <div>
+      <CardHeader>
+        <CardTitle>Todo List</CardTitle>
+        <CardDescription>
+          Check off your tasks as you complete them.
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <p>existing todos go here</p>
+      </CardContent>
+
+      <form onSubmit={(e) => createTodo(e)}>
+        <CardFooter className="flex-col">
+          <Input
+            className="mb-2 w-full"
+            name="title"
+            placeholder="Add a new task"
+          />
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? 'Loading ...' : 'Add task'}
+          </Button>
+        </CardFooter>
+      </form>
+    </div>
   )
 }
