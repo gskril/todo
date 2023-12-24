@@ -1,5 +1,5 @@
 import { Session } from '@supabase/supabase-js'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { supabase } from '../supabase'
 import { Todo } from '../types'
@@ -65,7 +65,7 @@ export default function Account({ session }: { session: Session }) {
       <input name="title" type="text" placeholder="my task" />
       <div>
         <button
-          className="button block primary"
+          className="button primary block"
           type="submit"
           disabled={loading}
         >

@@ -1,7 +1,7 @@
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-slate-50 min-h-svh p-4 flex w-full justify-center items-center">
-      <div className="bg-white max-w-96 mx-auto border-2 boder-slate-200 rounded-lg p-2 w-full h-fit shadow-sm">
+    <div className="flex min-h-svh w-full items-center justify-center bg-slate-50 p-4">
+      <div className="boder-slate-200 mx-auto h-fit w-full max-w-96 rounded-lg border-2 bg-white p-2 shadow-sm">
         {children}
       </div>
     </div>
