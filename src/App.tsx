@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from './supabase'
 import Account from './screens/Account'
 import Auth from './screens/Auth'
+import { Layout } from './components/Layout'
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -18,9 +19,9 @@ export default function App() {
     })
   }, [])
 
-  if (session) {
-    return <Account key={session.user.id} session={session} />
-  } else {
-    return <Auth />
-  }
+  return (
+    <Layout>
+      {session ? <Account key={session.user.id} session={session} /> : <Auth />}
+    </Layout>
+  )
 }
