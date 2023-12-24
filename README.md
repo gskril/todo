@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Simple To-Do App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Stupid simple, mobile first PWA to keep track of to-do's. Built with React, Vite, Typescript, and Supabase.
 
-Currently, two official plugins are available:
+Prompted by [@cameron on Farcaster](https://warpcast.com/greg/0xef8ab635).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to run locally:
 
-## Expanding the ESLint configuration
+Requirements: [Node.js](https://nodejs.org/en/download/), [Yarn](https://classic.yarnpkg.com/en/docs/install/), [Docker](https://docs.docker.com/get-docker/), [Supabase CLI](https://supabase.com/docs/guides/cli)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+**In the project directory**, create a local Supabase instance. This will create all the tables for you.
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+supabase start
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Create a `.env` file with the Supabase secrets from the CLI output.
+
+```
+cp .env.example .env
+```
+
+Install dependencies.
+
+```
+yarn install
+```
+
+Run the app.
+
+```
+yarn dev
+```
