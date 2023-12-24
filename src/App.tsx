@@ -1,7 +1,6 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
-import './App.css'
 import { supabase } from './supabase'
 import Account from './screens/Account'
 import Auth from './screens/Auth'
