@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Toaster } from '@/components/ui/sonner'
 import { useTodos } from '@/hooks/useTodos'
 
-const taskFilters = ['none', 'tasks', 'content'] as const
+const taskFilters = ['none', 'task', 'content'] as const
 type TaskFilters = (typeof taskFilters)[number]
 
 export default function Account({ session }: { session: Session }) {
@@ -30,8 +30,7 @@ export default function Account({ session }: { session: Session }) {
 
   const filteredData = data?.filter((todo) => {
     if (filter === 'none') return false
-    if (filter === 'tasks') return todo.tag === 'task'
-    if (filter === 'content') return todo.tag === 'content'
+    return todo.tag === filter
   })
 
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
@@ -194,7 +193,7 @@ function FilterBadge({
       className="cursor-pointer capitalize"
       onClick={() => setFilter(id)}
     >
-      {id}
+      {id === 'task' ? 'tasks' : id}
     </Badge>
   )
 }
