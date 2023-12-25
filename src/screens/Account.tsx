@@ -17,15 +17,14 @@ import { useTodos } from '@/hooks/useTodos'
 export default function Account({ session }: { session: Session }) {
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [buttonUsed, setButtonUsed] = useState<'task' | 'content'>('task')
 
-  const { data, create, complete, remove, isLoading } = useTodos(
-    session,
-    trigger
-  )
+  const { data, create, complete, remove } = useTodos(session, trigger)
 
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setIsSubmitting(true)
 
     const { error } = await create({
       title,
@@ -37,12 +36,15 @@ export default function Account({ session }: { session: Session }) {
       alert(error.message)
     } else {
       setTitle('')
-      setTrigger(title)
+      setTrigger(new Date().toISOString())
     }
+
+    setIsSubmitting(false)
   }
 
   async function handleRemove(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setIsSubmitting(true)
 
     const formData = new FormData(event.currentTarget)
     const id = formData.get('id') as string
@@ -51,12 +53,15 @@ export default function Account({ session }: { session: Session }) {
     if (error) {
       alert(error.message)
     } else {
-      setTrigger(id)
+      setTrigger(new Date().toISOString())
     }
+
+    setIsSubmitting(false)
   }
 
   async function handleComplete(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setIsSubmitting(true)
 
     const formData = new FormData(event.currentTarget)
     const id = formData.get('id') as string
@@ -65,8 +70,10 @@ export default function Account({ session }: { session: Session }) {
     if (error) {
       alert(error.message)
     } else {
-      setTrigger(id)
+      setTrigger(new Date().toISOString())
     }
+
+    setIsSubmitting(false)
   }
 
   return (
@@ -123,19 +130,19 @@ export default function Account({ session }: { session: Session }) {
               className="w-full"
               type="submit"
               id="task-btn"
-              disabled={isLoading}
+              disabled={isSubmitting}
               onClick={() => setButtonUsed('task')}
             >
-              {isLoading ? 'Loading ...' : 'Save task'}
+              Save task
             </Button>
 
             <Button
               className="w-full"
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               onClick={() => setButtonUsed('content')}
             >
-              {isLoading ? 'Loading ...' : 'Save content'}
+              Save content
             </Button>
           </div>
         </CardFooter>

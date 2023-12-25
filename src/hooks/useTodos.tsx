@@ -7,12 +7,9 @@ import { CreateTodo, Todo } from '@/types'
 
 export function useTodos(session: Session, trigger: string) {
   const [data, setData] = useState<Todo[] | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function getTodos() {
-      setIsLoading(true)
-
       const { data, error } = await supabase
         .from('todos')
         .select('*')
@@ -24,8 +21,6 @@ export function useTodos(session: Session, trigger: string) {
       } else if (data) {
         setData(data)
       }
-
-      setIsLoading(false)
     }
 
     getTodos()
@@ -62,5 +57,5 @@ export function useTodos(session: Session, trigger: string) {
     return res
   }
 
-  return { data, create, complete, remove, isLoading }
+  return { data, create, complete, remove }
 }
