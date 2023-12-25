@@ -1,5 +1,14 @@
 import { useState } from 'react'
 
+import { Button } from '@/components/ui/button'
+import {
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+
 import { supabase } from '../supabase'
 
 export default function Auth() {
@@ -39,39 +48,37 @@ export default function Auth() {
   }
 
   return (
-    <div className="row flex-center flex">
-      <div className="col-6 form-widget">
-        <h1 className="header">Supabase + React</h1>
-        <p className="description">
-          Sign in via magic link with your email below
-        </p>
-        <form className="form-widget" onSubmit={handleLogin}>
-          <div>
-            <input
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              required={true}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div>
+      <CardHeader>
+        <CardTitle>Todo List</CardTitle>
+        <CardDescription>Sign in to manage your tasks.</CardDescription>
+      </CardHeader>
 
-            <input
-              className="inputField"
-              type="password"
-              placeholder="Your password"
-              value={password}
-              required={true}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <button className={'button block'} disabled={loading}>
-              {loading ? <span>Loading</span> : <span>Register</span>}
-            </button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={handleLogin}>
+        <CardContent className="flex flex-col gap-2">
+          <Input
+            className="inputField"
+            type="email"
+            placeholder="Your email"
+            value={email}
+            required={true}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <Input
+            className="inputField"
+            type="password"
+            placeholder="Your password"
+            value={password}
+            required={true}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <Button className={'button block'} disabled={loading}>
+            {loading ? <span>Loading</span> : <span>Register</span>}
+          </Button>
+        </CardContent>
+      </form>
     </div>
   )
 }
