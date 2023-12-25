@@ -1,6 +1,6 @@
-# Simple To-Do App
+# Simple Todo App
 
-Stupid simple, mobile first PWA to keep track of to-do's. Built with React, Vite, Typescript, and Supabase.
+Stupid simple, mobile first PWA to keep track of todos. Built with React, Vite, Typescript, and Supabase.
 
 Prompted by [@cameron on Farcaster](https://warpcast.com/greg/0xef8ab635).
 
