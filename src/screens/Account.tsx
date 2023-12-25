@@ -12,12 +12,16 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Toaster } from '@/components/ui/toaster'
 import { useTodos } from '@/hooks/useTodos'
 
 export default function Account({ session }: { session: Session }) {
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
-  const { data, create, remove, isLoading } = useTodos(session, trigger)
+  const { data, create, complete, remove, isLoading } = useTodos(
+    session,
+    trigger
+  )
 
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -45,6 +49,20 @@ export default function Account({ session }: { session: Session }) {
     }
   }
 
+  async function handleComplete(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    const id = formData.get('id') as string
+    const { error } = await complete(id)
+
+    if (error) {
+      alert(error.message)
+    } else {
+      setTrigger(id)
+    }
+  }
+
   return (
     <div>
       <CardHeader>
@@ -61,9 +79,16 @@ export default function Account({ session }: { session: Session }) {
               {todo.title}
             </Label>
 
-            <Button className="text-green-500" variant="outline">
-              <CheckIcon className="h-4 w-4" />
-            </Button>
+            <form onSubmit={handleComplete}>
+              <input type="hidden" name="id" value={todo.id} />
+              <Button
+                className="text-green-500"
+                variant="outline"
+                type="submit"
+              >
+                <CheckIcon className="h-4 w-4" />
+              </Button>
+            </form>
 
             <form onSubmit={handleRemove}>
               <input type="hidden" name="id" value={todo.id} />
@@ -88,6 +113,8 @@ export default function Account({ session }: { session: Session }) {
           </Button>
         </CardFooter>
       </form>
+
+      <Toaster />
     </div>
   )
 }

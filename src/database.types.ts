@@ -1,3 +1,5 @@
+// Generated with `supabase gen types typescript --local > src/database.types.ts`
+
 export type Json =
   | string
   | number
@@ -36,6 +38,7 @@ export interface Database {
     Tables: {
       todos: {
         Row: {
+          completed: boolean
           created_at: string
           id: string
           tag: string
@@ -44,6 +47,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
+          completed?: boolean
           created_at?: string
           id?: string
           tag: string
@@ -52,6 +56,7 @@ export interface Database {
           user_id: string
         }
         Update: {
+          completed?: boolean
           created_at?: string
           id?: string
           tag?: string

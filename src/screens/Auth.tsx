@@ -34,14 +34,10 @@ export default function Auth() {
 
         if (signInError) {
           alert(signInError.message)
-        } else {
-          alert('Check your email for the login link!')
         }
       } else {
         alert(error.message)
       }
-    } else {
-      alert('Check your email for the login link!')
     }
 
     setLoading(false)
