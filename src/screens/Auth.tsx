@@ -11,12 +11,14 @@ import { Input } from '@/components/ui/input'
 
 import { supabase } from '../supabase'
 
+const isLocalDb = import.meta.env.VITE_SUPABASE_URL?.includes('localhost')
+
 export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     setLoading(true)
@@ -27,6 +29,7 @@ export default function Auth() {
 
     if (error) {
       if (error.message === 'User already registered') {
+        // If the user already exists, try to sign them in instead
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -43,6 +46,21 @@ export default function Auth() {
     setLoading(false)
   }
 
+  const handleGoogleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setLoading(true)
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+
+    if (error) {
+      alert(error.message)
+    }
+
+    setLoading(false)
+  }
+
   return (
     <div>
       <CardHeader>
@@ -50,31 +68,46 @@ export default function Auth() {
         <CardDescription>Sign in to manage your tasks.</CardDescription>
       </CardHeader>
 
-      <form onSubmit={handleLogin}>
-        <CardContent className="flex flex-col gap-2">
-          <Input
-            className="inputField"
-            type="email"
-            placeholder="Your email"
-            value={email}
-            required={true}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+      {(() => {
+        if (isLocalDb) {
+          // Google auth doesn't work with local Supabase, so we'll use email auth instead
+          return (
+            <form onSubmit={handleEmailLogin}>
+              <CardContent className="flex flex-col gap-2">
+                <Input
+                  type="email"
+                  placeholder="Your email"
+                  value={email}
+                  required={true}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
-          <Input
-            className="inputField"
-            type="password"
-            placeholder="Your password"
-            value={password}
-            required={true}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+                <Input
+                  type="password"
+                  placeholder="Your password"
+                  value={password}
+                  required={true}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
 
-          <Button className={'button block'} disabled={loading}>
-            {loading ? <span>Loading</span> : <span>Register</span>}
-          </Button>
-        </CardContent>
-      </form>
+                <Button disabled={loading}>
+                  {loading ? <span>Loading</span> : <span>Register</span>}
+                </Button>
+              </CardContent>
+            </form>
+          )
+        }
+
+        return (
+          <form onSubmit={handleGoogleLogin}>
+            <CardContent className="flex flex-col">
+              <Button disabled={loading} type="submit">
+                Sign in with Google
+              </Button>
+            </CardContent>
+          </form>
+        )
+      })()}
     </div>
   )
 }
