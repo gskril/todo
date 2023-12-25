@@ -64,7 +64,7 @@ export default function Auth() {
   return (
     <div>
       <CardHeader>
-        <CardTitle>Todo List</CardTitle>
+        <CardTitle>Todo</CardTitle>
         <CardDescription>Sign in to manage your tasks.</CardDescription>
       </CardHeader>
 
