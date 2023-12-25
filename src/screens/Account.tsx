@@ -79,12 +79,17 @@ export default function Account({ session }: { session: Session }) {
       </CardHeader>
 
       <CardContent className="divide-y divide-gray-200">
-        {data.map((todo) => (
+        {data && data.length === 0 && (
+          <div className="py-2 text-center text-gray-500">Nothing to do 💤</div>
+        )}
+
+        {data?.map((todo) => (
           <div className="flex items-center space-x-2 py-2" key={todo.id}>
             <span className="flex-grow text-sm">{todo.title}</span>
 
             <form onSubmit={handleComplete}>
               <input type="hidden" name="id" value={todo.id} />
+
               <Button
                 className="text-green-500"
                 variant="outline"

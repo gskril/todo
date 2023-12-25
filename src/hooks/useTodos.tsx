@@ -6,7 +6,7 @@ import { supabase } from '@/supabase'
 import { CreateTodo, Todo } from '@/types'
 
 export function useTodos(session: Session, trigger: string) {
-  const [data, setData] = useState<Todo[]>([])
+  const [data, setData] = useState<Todo[] | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
