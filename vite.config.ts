@@ -6,10 +6,10 @@ import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 const pwaOptions: Partial<VitePWAOptions> = {
   includeAssets: ['favicon.svg'],
   manifest: {
-    name: 'PWA Router',
-    short_name: 'PWA Router',
-    description: "A PWA Router with React Router's API",
-    theme_color: '#ffffff',
+    name: 'Todo',
+    short_name: 'Todo',
+    description: 'Stupid simple, mobile first PWA to keep track of todos',
+    theme_color: '#F8FAFC',
     icons: [
       {
         src: 'pwa-192x192.png',
