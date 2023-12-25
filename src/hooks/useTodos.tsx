@@ -1,7 +1,7 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-import { toast } from '@/components/ui/use-toast'
 import { supabase } from '@/supabase'
 import { CreateTodo, Todo } from '@/types'
 
@@ -39,9 +39,9 @@ export function useTodos(session: Session, trigger: string) {
     const res = await supabase.from('todos').delete().match({ id })
 
     if (res.error) {
-      toast({ description: res.error.message, variant: 'destructive' })
+      toast.error(res.error.message)
     } else {
-      toast({ description: 'Todo deleted' })
+      toast.success('Todo deleted')
     }
 
     return res
@@ -54,9 +54,9 @@ export function useTodos(session: Session, trigger: string) {
       .match({ id })
 
     if (res.error) {
-      toast({ description: res.error.message, variant: 'destructive' })
+      toast.error(res.error.message)
     } else {
-      toast({ description: 'Todo completed' })
+      toast.success('Todo completed')
     }
 
     return res
