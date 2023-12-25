@@ -17,9 +17,9 @@ import { useTodos } from '@/hooks/useTodos'
 export default function Account({ session }: { session: Session }) {
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
-  const { data, create, isLoading } = useTodos(session, trigger)
+  const { data, create, remove, isLoading } = useTodos(session, trigger)
 
-  async function createTodo(event: React.FormEvent<HTMLFormElement>) {
+  async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const { error } = await create({ title, tag: '', user_id: session.user.id })
 
@@ -28,6 +28,20 @@ export default function Account({ session }: { session: Session }) {
     } else {
       setTitle('')
       setTrigger(title)
+    }
+  }
+
+  async function handleRemove(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    const id = formData.get('id') as string
+    const { error } = await remove(id)
+
+    if (error) {
+      alert(error.message)
+    } else {
+      setTrigger(id)
     }
   }
 
@@ -51,14 +65,17 @@ export default function Account({ session }: { session: Session }) {
               <CheckIcon className="h-4 w-4" />
             </Button>
 
-            <Button className="text-red-500" variant="outline">
-              <TrashIcon className="h-4 w-4" />
-            </Button>
+            <form onSubmit={handleRemove}>
+              <input type="hidden" name="id" value={todo.id} />
+              <Button className="text-red-500" variant="outline" type="submit">
+                <TrashIcon className="h-4 w-4" />
+              </Button>
+            </form>
           </div>
         ))}
       </CardContent>
 
-      <form onSubmit={(e) => createTodo(e)}>
+      <form onSubmit={handleCreate}>
         <CardFooter className="flex-col gap-2">
           <Input
             name="title"

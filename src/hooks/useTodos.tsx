@@ -33,5 +33,9 @@ export function useTodos(session: Session, trigger: string) {
     return await supabase.from('todos').insert(todo)
   }
 
-  return { data, create, isLoading }
+  async function remove(id: string) {
+    return await supabase.from('todos').delete().match({ id })
+  }
+
+  return { data, create, remove, isLoading }
 }
