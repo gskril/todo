@@ -1,6 +1,5 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 
 import { supabase } from '@/supabase'
 import { CreateTodo, Todo } from '@/types'
@@ -31,30 +30,14 @@ export function useTodos(session: Session, trigger: string) {
   }
 
   async function remove(id: string) {
-    const res = await supabase.from('todos').delete().match({ id })
-
-    if (res.error) {
-      toast.error(res.error.message)
-    } else {
-      toast.success('Todo deleted')
-    }
-
-    return res
+    return await supabase.from('todos').delete().match({ id })
   }
 
   async function complete(id: string) {
-    const res = await supabase
+    return await supabase
       .from('todos')
       .update({ completed: true })
       .match({ id })
-
-    if (res.error) {
-      toast.error(res.error.message)
-    } else {
-      toast.success('Todo completed')
-    }
-
-    return res
   }
 
   return { data, create, complete, remove }

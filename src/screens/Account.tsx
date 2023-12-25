@@ -1,11 +1,13 @@
 import { Session } from '@supabase/supabase-js'
+import clsx from 'clsx'
 import { CheckIcon, TrashIcon } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,13 +16,23 @@ import { Input } from '@/components/ui/input'
 import { Toaster } from '@/components/ui/sonner'
 import { useTodos } from '@/hooks/useTodos'
 
+const taskFilters = ['none', 'tasks', 'content'] as const
+type TaskFilters = (typeof taskFilters)[number]
+
 export default function Account({ session }: { session: Session }) {
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [filter, setFilter] = useState<TaskFilters>('none')
   const [buttonUsed, setButtonUsed] = useState<'task' | 'content'>('task')
 
   const { data, create, complete, remove } = useTodos(session, trigger)
+
+  const filteredData = data?.filter((todo) => {
+    if (filter === 'none') return false
+    if (filter === 'tasks') return todo.tag === 'task'
+    if (filter === 'content') return todo.tag === 'content'
+  })
 
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -33,9 +45,10 @@ export default function Account({ session }: { session: Session }) {
     })
 
     if (error) {
-      alert(error.message)
+      toast.error(error.message)
     } else {
       setTitle('')
+      toast.success('Todo created')
       setTrigger(new Date().toISOString())
     }
 
@@ -51,8 +64,9 @@ export default function Account({ session }: { session: Session }) {
     const { error } = await remove(id)
 
     if (error) {
-      alert(error.message)
+      toast.error(error.message)
     } else {
+      toast.success('Todo deleted')
       setTrigger(new Date().toISOString())
     }
 
@@ -68,8 +82,9 @@ export default function Account({ session }: { session: Session }) {
     const { error } = await complete(id)
 
     if (error) {
-      alert(error.message)
+      toast.error(error.message)
     } else {
+      toast.success('Todo completed')
       setTrigger(new Date().toISOString())
     }
 
@@ -78,19 +93,27 @@ export default function Account({ session }: { session: Session }) {
 
   return (
     <div>
-      <CardHeader>
-        <CardTitle>Todo List</CardTitle>
-        <CardDescription>
-          Check off your tasks as you complete them.
-        </CardDescription>
+      <CardHeader className="flex-row items-center justify-between gap-2">
+        <CardTitle>Todos</CardTitle>
+
+        <div className="flex items-center gap-2">
+          {taskFilters.map((f) => (
+            <FilterBadge id={f} filter={filter} setFilter={setFilter} />
+          ))}
+        </div>
       </CardHeader>
 
-      <CardContent className="divide-y divide-gray-200">
-        {data && data.length === 0 && (
+      <CardContent
+        className={clsx([
+          'divide-y divide-gray-200',
+          filter === 'none' && 'hidden',
+        ])}
+      >
+        {filteredData && filteredData.length === 0 && (
           <div className="py-2 text-center text-gray-500">Nothing to do 💤</div>
         )}
 
-        {data?.map((todo) => (
+        {filteredData?.map((todo) => (
           <div className="flex items-center space-x-2 py-2" key={todo.id}>
             <span className="flex-grow text-sm">{todo.title}</span>
 
@@ -150,5 +173,28 @@ export default function Account({ session }: { session: Session }) {
 
       <Toaster />
     </div>
+  )
+}
+
+// TODO: Convert this to a more semantic component like a radio group
+function FilterBadge({
+  id,
+  filter,
+  setFilter,
+}: {
+  id: TaskFilters
+  filter: TaskFilters
+  setFilter: (filter: TaskFilters) => void
+}) {
+  const variant = filter === id ? 'default' : 'outline'
+
+  return (
+    <Badge
+      variant={variant}
+      className="cursor-pointer capitalize"
+      onClick={() => setFilter(id)}
+    >
+      {id}
+    </Badge>
   )
 }
