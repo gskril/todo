@@ -103,7 +103,7 @@ export default function Account({ session }: { session: Session }) {
 
         <div className="flex items-center gap-2">
           {taskFilters.map((f) => (
-            <FilterBadge id={f} filter={filter} setFilter={setFilter} />
+            <FilterBadge id={f} filter={filter} setFilter={setFilter} key={f} />
           ))}
         </div>
       </CardHeader>
@@ -137,6 +137,7 @@ export default function Account({ session }: { session: Session }) {
 
             <form onSubmit={handleRemove}>
               <input type="hidden" name="id" value={todo.id} />
+
               <Button className="text-red-500" variant="outline" type="submit">
                 <TrashIcon className="h-4 w-4" />
               </Button>
@@ -148,6 +149,7 @@ export default function Account({ session }: { session: Session }) {
       <form onSubmit={handleCreate}>
         <CardFooter className="flex-col gap-2">
           <Input
+            required
             name="title"
             placeholder="Take out the trash"
             value={title}
