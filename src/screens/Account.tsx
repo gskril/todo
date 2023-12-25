@@ -1,7 +1,8 @@
+import autoAnimate from '@formkit/auto-animate'
 import { Session } from '@supabase/supabase-js'
 import clsx from 'clsx'
 import { CheckIcon, TrashIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Badge } from '@/components/ui/badge'
@@ -20,6 +21,7 @@ const taskFilters = ['none', 'task', 'content'] as const
 type TaskFilters = (typeof taskFilters)[number]
 
 export default function Account({ session }: { session: Session }) {
+  const animationParent = useRef(null)
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,6 +29,10 @@ export default function Account({ session }: { session: Session }) {
   const [buttonUsed, setButtonUsed] = useState<'task' | 'content'>('task')
 
   const { data, create, complete, remove } = useTodos(session, trigger)
+
+  useEffect(() => {
+    animationParent.current && autoAnimate(animationParent.current)
+  }, [animationParent])
 
   const filteredData = data?.filter((todo) => {
     if (filter === 'none') return false
@@ -103,6 +109,7 @@ export default function Account({ session }: { session: Session }) {
       </CardHeader>
 
       <CardContent
+        ref={animationParent}
         className={clsx([
           'divide-y divide-gray-200',
           filter === 'none' && 'hidden',
