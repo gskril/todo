@@ -1,5 +1,7 @@
+import { Info } from 'lucide-react'
 import { useState } from 'react'
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   CardContent,
@@ -74,6 +76,15 @@ export default function Auth() {
           return (
             <form onSubmit={handleEmailLogin}>
               <CardContent className="flex flex-col gap-2">
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertTitle>Heads up!</AlertTitle>
+                  <AlertDescription>
+                    Local Supabase has limited auth providers so you're seeing a
+                    fallback.
+                  </AlertDescription>
+                </Alert>
+
                 <Input
                   type="email"
                   placeholder="Your email"
