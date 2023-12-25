@@ -1,6 +1,8 @@
-# Simple Todo App
+# Todo
 
-Stupid simple, mobile first PWA to keep track of todos. Built with React, Vite, Typescript, and Supabase.
+Simple PWA to keep track of todos. Built with React, Vite, Typescript, Tailwind, shadcn/ui, and Supabase.
+
+![CleanShot 2023-12-25 at 01 13 21](https://github.com/gskril/todo/assets/35093316/d4eda935-1f6a-472f-a857-8b34a531fbb7)
 
 Prompted by [@cameron on Farcaster](https://warpcast.com/greg/0xef8ab635).
 
