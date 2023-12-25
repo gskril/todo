@@ -11,13 +11,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Toaster } from '@/components/ui/toaster'
 import { useTodos } from '@/hooks/useTodos'
 
 export default function Account({ session }: { session: Session }) {
   const [title, setTitle] = useState('')
   const [trigger, setTrigger] = useState('')
+  const [buttonUsed, setButtonUsed] = useState<'task' | 'content'>('task')
+
   const { data, create, complete, remove, isLoading } = useTodos(
     session,
     trigger
@@ -25,7 +26,12 @@ export default function Account({ session }: { session: Session }) {
 
   async function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const { error } = await create({ title, tag: '', user_id: session.user.id })
+
+    const { error } = await create({
+      title,
+      tag: buttonUsed,
+      user_id: session.user.id,
+    })
 
     if (error) {
       alert(error.message)
@@ -75,9 +81,7 @@ export default function Account({ session }: { session: Session }) {
       <CardContent className="divide-y divide-gray-200">
         {data.map((todo) => (
           <div className="flex items-center space-x-2 py-2" key={todo.id}>
-            <Label className="flex-grow" htmlFor="task-1">
-              {todo.title}
-            </Label>
+            <span className="flex-grow text-sm">{todo.title}</span>
 
             <form onSubmit={handleComplete}>
               <input type="hidden" name="id" value={todo.id} />
@@ -104,13 +108,31 @@ export default function Account({ session }: { session: Session }) {
         <CardFooter className="flex-col gap-2">
           <Input
             name="title"
-            placeholder="Add a new task"
+            placeholder="Take out the trash"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <Button className="w-full" type="submit" disabled={isLoading}>
-            {isLoading ? 'Loading ...' : 'Add task'}
-          </Button>
+
+          <div className="flex w-full gap-2">
+            <Button
+              className="w-full"
+              type="submit"
+              id="task-btn"
+              disabled={isLoading}
+              onClick={() => setButtonUsed('task')}
+            >
+              {isLoading ? 'Loading ...' : 'Save task'}
+            </Button>
+
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={isLoading}
+              onClick={() => setButtonUsed('content')}
+            >
+              {isLoading ? 'Loading ...' : 'Save content'}
+            </Button>
+          </div>
         </CardFooter>
       </form>
 
