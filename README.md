@@ -47,3 +47,5 @@ supabase db push
 ```
 
 In the Supabase dashboard, navigate to Authentication > Providers and [follow these instructions](https://supabase.com/docs/guides/auth/social-login/auth-google?platform=web#configuration-web) to set up Google OAuth.
+
+Lastly, update your deployed Site URL in the Supabase dashboard under [Authentication > URL Configuration](https://supabase.com/dashboard/project/_/auth/url-configuration).
