@@ -1,5 +1,6 @@
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
+import { Toaster } from 'sonner'
 
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
@@ -40,6 +41,8 @@ export default function App() {
           Sign out
         </Button>
       )}
+
+      <Toaster />
     </div>
   )
 }

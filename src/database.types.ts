@@ -73,6 +73,31 @@ export interface Database {
           },
         ]
       }
+      users: {
+        Row: {
+          created_at: string | null
+          id: string
+          sheet_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          sheet_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          sheet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'users_id_fkey'
+            columns: ['id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
